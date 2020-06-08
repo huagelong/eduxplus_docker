@@ -6,7 +6,6 @@ yum -y install autoconf
 yum -y install pcre pcre-devel
 yum -y install openssl
 yum -y install openssl-devel
-yum -y install wget
 yum -y install kernel-devel-3.10.0-862.14.4.el7.x86_64
 yum -y install libxml2
 yum -y install libxml2-devel
@@ -26,12 +25,11 @@ yum -y install libxslt
 yum -y install libxslt-devel
 yum -y install bzip2
 yum -y install bzip2-devel
-yum -y install libsqlite3x-devel
 yum -y install sqlite-devel
 yum -y install postgresql-devel
 yum -y install http://rpms.remirepo.net/enterprise/7/remi/x86_64//oniguruma5-6.9.4-1.el7.remi.x86_64.rpm
 yum -y install http://rpms.remirepo.net/enterprise/7/remi/x86_64//oniguruma5-devel-6.9.4-1.el7.remi.x86_64.rpm
-wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+curl -LsS http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -o epel-release-latest-7.noarch.rpm
 rpm -ivh epel-release-latest-7.noarch.rpm
 yum -y install aria2
 touch /etc/aria2.conf
@@ -44,7 +42,7 @@ tar xf /opt/lnmp/openresty-1.15.8.3.tar.gz -C /usr/src/ && cd /usr/src/openresty
 make -j4 && make install
 echo "export PATH=$PATH:/opt/openresty/nginx/sbin" >> /etc/profile
 source /etc/profile
-wget https://gitee.com/wangkaihui/codes/63qhf2edmi0vu9gkpl1rt63/raw?blob_name=openresty -O /opt/lnmp/openresty
+curl -LsS https://gitee.com/wangkaihui/codes/63qhf2edmi0vu9gkpl1rt63/raw?blob_name=openresty -o /opt/lnmp/openresty
 sed -i -e 's/\r//g' /opt/lnmp/openresty
 \cp -rf /opt/lnmp/openresty /etc/init.d/openresty
 chmod u+x /etc/init.d/openresty
@@ -52,7 +50,7 @@ chkconfig --add /etc/init.d/openresty
 chkconfig openresty on
 
 mv /opt/openresty/nginx/conf/nginx.conf /opt/openresty/nginx/conf/nginx.conf.back
-wget https://gitee.com/wangkaihui/codes/ful0k3ajqdi75mn28b14v29/raw?blob_name=nginx.conf -O /opt/openresty/nginx/conf/nginx.conf
+curl -LsS https://gitee.com/wangkaihui/codes/ful0k3ajqdi75mn28b14v29/raw?blob_name=nginx.conf -o /opt/openresty/nginx/conf/nginx.conf
 sed -i -e 's/\r//g' /opt/openresty/nginx/conf/nginx.conf
 mkdir -p /opt/openresty/nginx/conf/vhost
 
@@ -67,7 +65,6 @@ ln -s /opt/php/bin/php /usr/bin/php
 echo 'export PATH="/opt/php/bin:$PATH"'>>/etc/profile
 source /etc/profile
 
-curl -sS https://getcomposer.org/installer | php
 aria2c -c -x16 -s20 -j20 --conf-path=/etc/aria2.conf https://getcomposer.org/installer -o composer_installer
 php /opt/lnmp/composer_installer
 mv composer.phar /usr/local/bin/composer
@@ -99,6 +96,3 @@ groupadd www-data
 useradd -g www-data www-data
 
 rm -rf /opt/lnmp /usr/src/openresty-1.15.8.3/  /usr/src/php-7.4.6/ /usr/src/swoole-4.5.2/ /usr/src/redis-5.2.2/
-
-#service php-fpm start
-#service openresty start
